@@ -1,0 +1,37 @@
+services:
+  lb:
+    build:
+      context: lb
+    networks:
+      dev:
+        ipv4_address: 172.33.0.2
+    ports:
+      - "42069:80"
+  backend:
+    image: ${REGISTRY:-local}/kantinfo-backend:${VERSION:-x}
+    build:
+      context: backend
+      target: production
+    environment:
+      SCHOOL_ID: ${SCHOOL_ID}
+      OFFER_ID: ${OFFER_ID}
+    networks:
+      dev:
+        ipv4_address: 172.33.0.3
+  frontend:
+    image: ${REGISTRY:-local}/kantinfo-frontend:${VERSION:-x}
+    build:
+      context: frontend
+      target: production
+    networks:
+      dev:
+        ipv4_address: 172.33.0.4
+networks:
+  dev:
+    name: kantinfo
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1420
+    ipam:
+      config:
+        - subnet: 172.33.0.0/16

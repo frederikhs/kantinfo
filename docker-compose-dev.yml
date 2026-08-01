@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      target: development
+    volumes:
+      - ./backend:/src
+      - go-build-cache:/gocache
+      - go-mod-cache:/go/pkg/mod
+    environment:
+      - GOCACHE=/gocache
+      - GOMODCACHE=/go/pkg/mod
+  frontend:
+    build:
+      target: development
+    volumes:
+      - ./frontend:/app
+volumes:
+  go-build-cache:
+  go-mod-cache:

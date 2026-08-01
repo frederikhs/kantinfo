@@ -84,6 +84,28 @@ func (p SqlitePersistor) ClearData() {
 	}
 }
 
+func (p SqlitePersistor) Begin() {
+	q := `
+    BEGIN TRANSACTION;
+	`
+
+	_, err := p.db.Exec(q)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (p SqlitePersistor) Commit() {
+	q := `
+    COMMIT;
+	`
+
+	_, err := p.db.Exec(q)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func (p SqlitePersistor) StoreMenu(date, group, item string) {
 	conv := `
 		INSERT INTO menu (

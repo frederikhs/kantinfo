@@ -10,6 +10,7 @@ import (
 )
 
 func SyncData(db persistence.SqlitePersistor) {
+	db.Begin()
 	db.ClearData()
 
 	schoolId := os.Getenv("SCHOOL_ID")
@@ -31,4 +32,6 @@ func SyncData(db persistence.SqlitePersistor) {
 			}
 		}
 	}
+
+	db.Commit()
 }

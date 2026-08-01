@@ -12,14 +12,20 @@ func Message(code int, message string) (int, any) {
 }
 
 func Error(c *gin.Context, err error) {
+	c.Header("Cache-Control", "no-store")
+	c.Header("Expires", "0")
 	c.JSON(Message(http.StatusInternalServerError, err.Error()))
 }
 
 func UserError(c *gin.Context, err error) {
+	c.Header("Cache-Control", "no-store")
+	c.Header("Expires", "0")
 	c.JSON(Message(http.StatusBadRequest, err.Error()))
 }
 
 func ResourceNotFound(c *gin.Context) {
+	c.Header("Cache-Control", "no-store")
+	c.Header("Expires", "0")
 	c.JSON(Message(http.StatusNotFound, "resource not found"))
 }
 

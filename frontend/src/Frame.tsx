@@ -11,11 +11,15 @@ type FrameData = {
     currentOrNext: CurrentOrNext
 }
 
-export default function Frame() {
+export default function Frame({nav}: { nav: boolean }) {
     const {date} = useParams();
 
     const dateV = useMemo(() => {
         if (date === undefined) {
+            return "next"
+        }
+
+        if (date === "neaste") {
             return "next"
         }
 
@@ -53,19 +57,23 @@ export default function Frame() {
 
     return (
         <div>
-            <div className={"app-header sticky top-0 z-1 mb-4"}>
-                <div className={"max-w-6xl mx-auto"}>
-                    <NavComponent navigation={activeData?.navigation} current_or_next={activeData?.currentOrNext}/>
+            {nav && (
+                <div className={"app-header sticky top-0 z-1 mb-4"}>
+                    <div className={"max-w-6xl mx-auto"}>
+                        <NavComponent navigation={activeData?.navigation} current_or_next={activeData?.currentOrNext}/>
+                    </div>
+                    <hr className={"divider mt-2 border-2"}/>
                 </div>
-                <hr className={"divider mt-2 border-2"}/>
-            </div>
+            )}
             <div className={"max-w-6xl mx-auto px-2 pb-4"}>
                 {activeData !== undefined && (
-                    <Outlet context={{
-                        navigation: activeData.navigation,
-                        menuItems: activeData.menuItems,
-                        currentOrNext: activeData.currentOrNext,
-                    }}/>
+                    <Outlet
+                        context={{
+                            navigation: activeData.navigation,
+                            menuItems: activeData.menuItems,
+                            currentOrNext: activeData.currentOrNext,
+                        }}
+                    />
                 )}
             </div>
         </div>

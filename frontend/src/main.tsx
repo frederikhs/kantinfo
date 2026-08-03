@@ -12,10 +12,13 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
         <BrowserRouter>
             <Routes>
-                <Route element={<Frame/>}>
+                <Route element={<Frame nav={true}/>}>
                     <Route index element={<MenuPage/>}/>
                     <Route path={"datoer"} element={<DatePage/>}/>
                     <Route path="menu/:date" element={<MenuPage/>}/>
+                </Route>
+                <Route element={<Frame nav={false}/>}>
+                    <Route path="menu/:date/stor" element={<MenuPage/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

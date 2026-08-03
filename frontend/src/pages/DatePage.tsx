@@ -39,6 +39,7 @@ export default function DatePage() {
 
             <p className={"muted"}>Menuen opdateres én gang i timen og viser de oplysninger, som kantinen selv har offentliggjort.</p>
             <p className={"muted"}>Menuen kan ændre sig, hvis kantinen opdaterer sine oplysninger. Det er også normalt, at menuen bliver mere detaljeret, jo tættere vi kommer på den pågældende dag.</p>
+            <p className={"muted flex items-center"}>Brug <Link className={"link mx-2"} to={"/menu/neaste/stor"} target={"_blank"}>link til storskærm</Link> for at vise menuen på storskærm i din afdeling</p>
         </div>
     )
 }

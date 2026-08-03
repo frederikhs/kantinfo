@@ -4,19 +4,25 @@
   html,
   body,
   #root {
-    min-height: 100%;
-    @apply font-mono;
+    /*min-height: 100%;*/
+    /*@apply font-mono;*/
   }
 
   body {
-    @apply m-0 text-slate-200 antialiased bg-slate-950;
+    @apply m-0 text-zinc-200 antialiased bg-zinc-950;
   }
 }
 
+
+
 .link {
-  @apply hover:text-white;
+  @apply hover:text-white hover:bg-zinc-900 w-fit p-2 px-4 bg-zinc-800 transition-all rounded-lg;
 }
 
 h2 {
-  @apply text-xl mb-4;
+  @apply text-2xl mb-4;
+}
+
+h3 {
+  @apply text-xl font-bold
 }

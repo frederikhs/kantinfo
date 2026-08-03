@@ -40,11 +40,11 @@ export default function Frame() {
 
     return (
         <div>
-            <div className={"sticky top-0 z-1 mb-4 bg-slate-950"}>
+            <div className={"sticky top-0 z-1 mb-4 bg-zinc-950"}>
                 <div className={"max-w-5xl mx-auto"}>
                     <NavComponent navigation={navigation} current_or_next={currentOrNext}/>
                 </div>
-                <hr className={"mt-2 text-slate-800 border-2"}/>
+                <hr className={"mt-2 text-zinc-800 border-2"}/>
             </div>
             <div className={"max-w-5xl mx-auto px-2 pb-4"}>
                 {menuItems !== undefined && currentOrNext !== undefined && navigation !== undefined && (

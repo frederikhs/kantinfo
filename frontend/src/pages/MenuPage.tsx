@@ -28,11 +28,17 @@ export default function MenuPage() {
     return (
         <div>
             <h2><DanishDate date={navigation.current_date}/></h2>
-            {sortedMenuItems.map((d, i) => {
-                return (
-                    <p className={"mb-2"} key={i}><strong>{d.group}</strong><br/>{d.item}<br/></p>
-                )
-            })}
+
+            <div className={"grid grid-cols-2 gap-4"}>
+                {sortedMenuItems.map((d, i) => {
+                    return (
+                        <div key={i} className={"bg-zinc-800 rounded-xl p-4"}>
+                            <h3>{d.group}</h3>
+                            <p>{d.item}</p>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }

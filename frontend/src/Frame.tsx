@@ -1,11 +1,14 @@
-import {Outlet, useOutletContext, useParams} from "react-router";
+import {Outlet, useParams} from "react-router";
 import NavComponent from "./components/NavComponent.tsx";
 import type {CurrentOrNext, MenuItem, Navigation} from "./type.ts";
 import {useEffect, useMemo, useState} from "react";
 import {getMenuItems} from "./util.ts";
 
-export function useData() {
-    return useOutletContext<{ navigation: Navigation, menuItems: MenuItem[], currentOrNext: CurrentOrNext }>();
+type FrameData = {
+    date: string
+    menuItems: MenuItem[]
+    navigation: Navigation
+    currentOrNext: CurrentOrNext
 }
 
 export default function Frame() {
@@ -19,36 +22,50 @@ export default function Frame() {
         return date
     }, [date])
 
-    const [menuItems, setMenuItems] = useState<MenuItem[]>()
-    const [navigation, setNavigation] = useState<Navigation>()
-    const [currentOrNext, setCurrentOrNext] = useState<CurrentOrNext>()
+    const [data, setData] = useState<FrameData>()
+    const activeData = data?.date === dateV ? data : undefined
 
     useEffect(() => {
-        setMenuItems(undefined)
-        setNavigation(undefined)
-        setCurrentOrNext(undefined)
+        let ignoreResponse = false
+
         getMenuItems(dateV).then((r) => {
-            if (r.status !== 200) {
+            if (ignoreResponse) {
                 return
             }
 
-            setMenuItems(r.response.menu)
-            setNavigation(r.response.navigation)
-            setCurrentOrNext(r.response.current_or_next)
+            if (r.status !== 200) {
+                setData(undefined)
+                return
+            }
+
+            setData({
+                date: dateV,
+                menuItems: r.response.menu,
+                navigation: r.response.navigation,
+                currentOrNext: r.response.current_or_next,
+            })
         })
+
+        return () => {
+            ignoreResponse = true
+        }
     }, [dateV])
 
     return (
         <div>
-            <div className={"sticky top-0 z-1 mb-4 bg-zinc-950"}>
-                <div className={"max-w-5xl mx-auto"}>
-                    <NavComponent navigation={navigation} current_or_next={currentOrNext}/>
+            <div className={"app-header sticky top-0 z-1 mb-4"}>
+                <div className={"max-w-6xl mx-auto"}>
+                    <NavComponent navigation={activeData?.navigation} current_or_next={activeData?.currentOrNext}/>
                 </div>
-                <hr className={"mt-2 text-zinc-800 border-2"}/>
+                <hr className={"divider mt-2 border-2"}/>
             </div>
-            <div className={"max-w-5xl mx-auto px-2 pb-4"}>
-                {menuItems !== undefined && currentOrNext !== undefined && navigation !== undefined && (
-                    <Outlet context={{navigation, menuItems, currentOrNext}}/>
+            <div className={"max-w-6xl mx-auto px-2 pb-4"}>
+                {activeData !== undefined && (
+                    <Outlet context={{
+                        navigation: activeData.navigation,
+                        menuItems: activeData.menuItems,
+                        currentOrNext: activeData.currentOrNext,
+                    }}/>
                 )}
             </div>
         </div>

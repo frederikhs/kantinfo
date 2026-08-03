@@ -1,4 +1,4 @@
-import {useData} from "../Frame.tsx";
+import {useData} from "../useData.ts";
 import {useMemo} from "react";
 import DanishDate from "../components/danishDate.tsx";
 
@@ -29,10 +29,10 @@ export default function MenuPage() {
         <div>
             <h2><DanishDate date={navigation.current_date}/></h2>
 
-            <div className={"grid grid-cols-2 gap-4"}>
+            <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                 {sortedMenuItems.map((d, i) => {
                     return (
-                        <div key={i} className={"bg-zinc-800 rounded-xl p-4"}>
+                        <div key={i} className={"surface rounded-xl p-4"}>
                             <h3>{d.group}</h3>
                             <p>{d.item}</p>
                         </div>

@@ -27,7 +27,7 @@ export default function DatePage() {
             {dates.map((d, i) => {
                 return (
                     <Link
-                        className={`${d.is_future && "text-zinc-400"} ${!d.is_today && !d.is_future && "text-zinc-600"} link flex justify-beween space-x-2`}
+                        className={`${d.is_future && "date-future"} ${!d.is_today && !d.is_future && "date-past"} link flex justify-beween space-x-2`}
                         to={"/menu/" + d.date}
                         key={i}
                     >
@@ -37,8 +37,8 @@ export default function DatePage() {
                 )
             })}
 
-            <p className={"opacity-50"}>Menuen opdateres én gang i timen og viser de oplysninger, som kantinen selv har offentliggjort.</p>
-            <p className={"opacity-50"}>Menuen kan ændre sig, hvis kantinen opdaterer sine oplysninger. Det er også normalt, at menuen bliver mere detaljeret, jo tættere vi kommer på den pågældende dag.</p>
+            <p className={"muted"}>Menuen opdateres én gang i timen og viser de oplysninger, som kantinen selv har offentliggjort.</p>
+            <p className={"muted"}>Menuen kan ændre sig, hvis kantinen opdaterer sine oplysninger. Det er også normalt, at menuen bliver mere detaljeret, jo tættere vi kommer på den pågældende dag.</p>
         </div>
     )
 }

@@ -1,28 +1,98 @@
 @import "tailwindcss";
 
 @layer base {
-  html,
-  body,
-  #root {
-    /*min-height: 100%;*/
-    /*@apply font-mono;*/
-  }
+    :root {
+        --color-bg:            #f8fafc;
+        --color-text:          #18181b;
+        --color-surface:       #ffffff;
+        --color-surface-hover: #f1f5f9;
+        --color-border:        #e2e8f0;
+        --color-muted:         #52525b;
+        --color-date-future:   #52525b;
+        --color-date-past:     #a1a1aa;
+        --color-surface-shadow: none;
+    }
 
-  body {
-    @apply m-0 text-zinc-200 antialiased bg-zinc-950;
-  }
+    :root[data-theme="dark"] {
+        --color-bg:            #09090b;
+        --color-text:          #e4e4e7;
+        --color-surface:       #27272a;
+        --color-surface-hover: #18181b;
+        --color-border:        #27272a;
+        --color-muted:         #a1a1aa;
+        --color-date-future:   #a1a1aa;
+        --color-date-past:     #52525b;
+        --color-surface-shadow: none;
+    }
+
+    body {
+        @apply m-0 antialiased;
+        background: var(--color-bg);
+        color:      var(--color-text);
+    }
 }
-
 
 
 .link {
-  @apply hover:text-white hover:bg-zinc-900 w-fit p-2 px-4 bg-zinc-800 transition-all rounded-lg;
+    @apply w-fit p-2 px-4 transition-all rounded-lg border;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: var(--color-surface-shadow);
+}
+
+.link:hover {
+    background: var(--color-surface-hover);
+}
+
+.logo-link {
+    @apply p-2 px-4 transition-all rounded-lg;
+}
+
+.logo-link:hover {
+    background: var(--color-surface-hover);
+}
+
+.app-header {
+    background: var(--color-bg);
+}
+
+.divider {
+    border-color: var(--color-border);
+}
+
+.surface {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--color-surface-shadow);
+}
+
+.muted {
+    color: var(--color-muted);
+}
+
+.date-future {
+    color: var(--color-date-future);
+}
+
+.date-past {
+    color: var(--color-date-past);
+}
+
+.theme-toggle {
+    @apply inline-flex size-10 items-center justify-center rounded-lg transition-all border;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: var(--color-surface-shadow);
+}
+
+.theme-toggle:hover {
+    background: var(--color-surface-hover);
 }
 
 h2 {
-  @apply text-2xl mb-4;
+    @apply text-2xl mb-4;
 }
 
 h3 {
-  @apply text-xl font-bold
+    @apply text-xl font-bold
 }

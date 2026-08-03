@@ -1,21 +1,24 @@
 import {Link} from "react-router";
 import type {CurrentOrNext, Navigation} from "../type.ts";
 import DanishDate from "./danishDate.tsx";
-import {ArrowLeftIcon, ArrowRightIcon, ArrowTrendingUpIcon, ArrowTurnLeftDownIcon} from "@heroicons/react/24/solid";
+import {ArrowLeftIcon, ArrowRightIcon, ArrowTrendingUpIcon, ArrowTurnLeftDownIcon, MoonIcon, SunIcon} from "@heroicons/react/24/solid";
+import {useTheme} from "../themeContext.ts";
 
 export default function NavComponent({navigation, current_or_next}: {
     navigation: Navigation | undefined,
     current_or_next: CurrentOrNext | undefined
 }) {
+    const {theme, toggleTheme} = useTheme()
+
     return (
         <div className={"pt-4 mb-4 mx-2"}>
             <nav className={"flex justify-between items-center"}>
                 <div className={"space-x-4"}>
-                    <Link to={"/"} className={`text-2xl hover:bg-zinc-800 p-2 px-4 -ml-4 transition-all rounded-lg`}>
+                    <Link to={"/"} className={`logo-link text-2xl -ml-4`}>
                         KantInfo
                     </Link>
                 </div>
-                <div className={"flex items-center space-x-4 h-px"}>
+                <div className={"flex items-center space-x-4"}>
                     {navigation !== undefined && current_or_next !== undefined && (
                         <>
                             {current_or_next.date !== navigation.current_date && (
@@ -45,10 +48,16 @@ export default function NavComponent({navigation, current_or_next}: {
                             )}
                         </>
                     )}
-                    <Link className={"link hidden md:flex justify-beween space-x-2"} to={"/datoer"}>
+                    <Link className={"link flex justify-beween space-x-2"} to={"/datoer"}>
                         <span>Vælg dato</span>
                         <ArrowTurnLeftDownIcon className="size-6"/>
                     </Link>
+                    <button
+                        className={"theme-toggle hover:cursor-pointer"}
+                        onClick={toggleTheme}
+                    >
+                        {theme === "dark" ? <SunIcon className="size-6"/> : <MoonIcon className="size-6"/>}
+                    </button>
                 </div>
             </nav>
         </div>

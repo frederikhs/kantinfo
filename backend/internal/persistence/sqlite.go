@@ -108,7 +108,7 @@ func (p SqlitePersistor) Commit() {
 
 func (p SqlitePersistor) StoreMenu(date, group, item string) {
 	conv := `
-		INSERT INTO menu (
+		INSERT OR IGNORE INTO menu (
 			date,
 			menu_group,
 			menu_item

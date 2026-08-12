@@ -40,7 +40,7 @@ func main() {
 	r := gin.Default()
 	r.Use(middleware.SetupCors("*"))
 
-	api := r.Group("/api", middleware.CacheUntil(getNextSyncAt))
+	api := r.Group("/api/v2", middleware.CacheUntil(getNextSyncAt))
 	api.GET("/menu/next", controller.GetMenuItemsNext(db))
 	api.GET("/menu/:date", controller.GetMenuItemsForDateByRouteParam(db))
 	api.GET("/dates", controller.GetDatesWithMenuItems(db))

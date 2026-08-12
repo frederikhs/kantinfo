@@ -34,7 +34,11 @@ export default function MenuPage() {
                     return (
                         <div key={i} className={"surface rounded-xl p-4"}>
                             <h3>{d.group}</h3>
-                            <p>{d.item}</p>
+                            <ul className={"list-disc pl-5"}>
+                                {d.items.map((item, itemIndex) => (
+                                    <li key={itemIndex}>{item}</li>
+                                ))}
+                            </ul>
                         </div>
                     )
                 })}

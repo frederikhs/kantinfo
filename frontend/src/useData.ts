@@ -1,6 +1,6 @@
 import {useOutletContext} from "react-router";
-import type {CurrentOrNext, MenuItem, Navigation} from "./type.ts";
+import type {CurrentOrNext, MenuGroup, Navigation} from "./type.ts";
 
 export function useData() {
-    return useOutletContext<{ navigation: Navigation, menuItems: MenuItem[], currentOrNext: CurrentOrNext }>();
+    return useOutletContext<{ navigation: Navigation, menuItems: MenuGroup[], currentOrNext: CurrentOrNext }>();
 }

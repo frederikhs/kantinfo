@@ -1,5 +1,5 @@
 import Environment from "./env.ts";
-import type {CurrentOrNext, MenuDate, MenuItem, Navigation} from "./type.ts";
+import type {CurrentOrNext, MenuDate, MenuGroup, Navigation} from "./type.ts";
 
 export interface Response {
     exception?: unknown
@@ -40,7 +40,7 @@ export async function getDates(): Promise<DatesResponse> {
 
 interface MenuResponse extends Response {
     response: {
-        menu: MenuItem[],
+        menu: MenuGroup[],
         navigation: Navigation,
         current_or_next: CurrentOrNext,
     }

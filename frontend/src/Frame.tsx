@@ -1,12 +1,12 @@
 import {Outlet, useParams} from "react-router";
 import NavComponent from "./components/NavComponent.tsx";
-import type {CurrentOrNext, MenuItem, Navigation} from "./type.ts";
+import type {CurrentOrNext, MenuGroup, Navigation} from "./type.ts";
 import {useEffect, useMemo, useState} from "react";
 import {getMenuItems} from "./util.ts";
 
 type FrameData = {
     date: string
-    menuItems: MenuItem[]
+    menuItems: MenuGroup[]
     navigation: Navigation
     currentOrNext: CurrentOrNext
 }

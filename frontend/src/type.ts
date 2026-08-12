@@ -4,9 +4,9 @@ export interface MenuDate {
     is_today: boolean
 }
 
-export interface MenuItem {
+export interface MenuGroup {
     group: string
-    item: string
+    items: string[]
 }
 
 export interface Navigation {

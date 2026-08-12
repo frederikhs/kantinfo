@@ -50,16 +50,42 @@ func GetMenuItemsForDate(c *gin.Context, persistor persistence.SqlitePersistor, 
 	}
 
 	c.JSON(http.StatusOK, MenuForDateResponse{
-		MenuItems:     items,
+		MenuItems:     groupMenuItems(*items),
 		Navigation:    surrounding,
 		CurrentorNext: currentOrNext,
 	})
 }
 
 type MenuForDateResponse struct {
-	MenuItems     *[]persistence.MenuItem        `json:"menu"`
+	MenuItems     []MenuGroup                    `json:"menu"`
 	Navigation    *persistence.SurroundingDates  `json:"navigation"`
 	CurrentorNext *persistence.CurrentOrNextDate `json:"current_or_next"`
+}
+
+type MenuGroup struct {
+	Group string   `json:"group"`
+	Items []string `json:"items"`
+}
+
+func groupMenuItems(items []persistence.MenuItem) []MenuGroup {
+	groups := make([]MenuGroup, 0)
+	groupIndexes := make(map[string]int)
+
+	for _, item := range items {
+		groupIndex, ok := groupIndexes[item.Group]
+		if !ok {
+			groupIndex = len(groups)
+			groupIndexes[item.Group] = groupIndex
+			groups = append(groups, MenuGroup{
+				Group: item.Group,
+				Items: []string{},
+			})
+		}
+
+		groups[groupIndex].Items = append(groups[groupIndex].Items, item.Item)
+	}
+
+	return groups
 }
 
 func GetMenuItemsForDateByRouteParam(persistor persistence.SqlitePersistor) func(c *gin.Context) {

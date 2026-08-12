@@ -29,10 +29,10 @@ export default function MenuPage() {
         <div>
             <h2><DanishDate date={navigation.current_date}/></h2>
 
-            <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+            <div className={"columns-1 sm:columns-2 gap-4"}>
                 {sortedMenuItems.map((d, i) => {
                     return (
-                        <div key={i} className={"surface rounded-xl p-4"}>
+                        <div key={i} className={"surface rounded-xl p-4 mb-4 break-inside-avoid"}>
                             <h3>{d.group}</h3>
                             <ul className={"list-disc pl-5"}>
                                 {d.items.map((item, itemIndex) => (

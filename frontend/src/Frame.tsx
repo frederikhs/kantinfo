@@ -79,7 +79,7 @@ export default function Frame({nav}: { nav: boolean }) {
                 {!nav && (
                     <div className={"surface rounded-xl p-4 mt-4 mb-4 break-inside-avoid"}>
                         <h3 className={"text-green-500 dark:text-green-700 text-center"}>
-                            <Link to={window.location.host}>{window.location.host}</Link>
+                            <Link to={window.location.protocol + "//" + window.location.host}>{window.location.host}</Link>
                         </h3>
                     </div>
                 )}

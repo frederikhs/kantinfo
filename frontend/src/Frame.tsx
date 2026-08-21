@@ -1,4 +1,4 @@
-import {Outlet, useParams} from "react-router";
+import {Link, Outlet, useParams} from "react-router";
 import NavComponent from "./components/NavComponent.tsx";
 import type {CurrentOrNext, MenuGroup, Navigation} from "./type.ts";
 import {useEffect, useMemo, useState} from "react";
@@ -74,6 +74,14 @@ export default function Frame({nav}: { nav: boolean }) {
                             currentOrNext: activeData.currentOrNext,
                         }}
                     />
+                )}
+
+                {!nav && (
+                    <div className={"surface rounded-xl p-4 mt-4 mb-4 break-inside-avoid"}>
+                        <h3 className={"text-green-500 dark:text-green-700 text-center"}>
+                            <Link to={window.location.host}>{window.location.host}</Link>
+                        </h3>
+                    </div>
                 )}
             </div>
         </div>

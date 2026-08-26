@@ -14,19 +14,13 @@ permissions:
 
 jobs:
   build:
-    name: build (${{ matrix.platform }})
-    runs-on: ${{ matrix.runner }}
+    name: build (linux/${{ matrix.arch }})
+    runs-on: ${{ matrix.arch == 'arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - platform: linux/amd64
-            runner: ubuntu-24.04
-            arch: amd64
-          - platform: linux/arm64
-            runner: ubuntu-24.04-arm
-            arch: arm64
+        arch: ${{ fromJSON(github.ref == 'refs/heads/main' && '["amd64", "arm64"]' || '["amd64"]') }}
 
     steps:
       - uses: actions/checkout@v7
@@ -52,7 +46,7 @@ jobs:
             backend
             frontend
           set: |
-            *.platform=${{ matrix.platform }}
+            *.platform=linux/${{ matrix.arch }}
             backend.tags=${{ env.REGISTRY }}/${{ github.repository }}-backend:${{ env.VERSION }}-${{ matrix.arch }}
             frontend.tags=${{ env.REGISTRY }}/${{ github.repository }}-frontend:${{ env.VERSION }}-${{ matrix.arch }}
             backend.cache-from=type=gha,scope=backend-${{ matrix.arch }},version=2

@@ -10,6 +10,8 @@ COPY package.json package-lock.json ./
 RUN --mount=type=cache,id=frontend-npm,target=/root/.npm \
     npm ci --prefer-offline
 COPY . .
+ARG GIT_SHA=unknown
+ENV VITE_GIT_SHA="${GIT_SHA}"
 RUN npm run build
 
 FROM nginx:mainline-alpine AS production
@@ -45,3 +47,6 @@ server {
 EOF
 
 COPY --from=build --chown=nginx:nginx /app/dist /usr/share/nginx/html
+
+ARG GIT_SHA=unknown
+LABEL org.opencontainers.image.revision="${GIT_SHA}"

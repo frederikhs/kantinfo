@@ -49,6 +49,8 @@ jobs:
             *.platform=linux/${{ matrix.arch }}
             backend.tags=${{ env.REGISTRY }}/${{ github.repository }}-backend:${{ env.VERSION }}-${{ matrix.arch }}
             frontend.tags=${{ env.REGISTRY }}/${{ github.repository }}-frontend:${{ env.VERSION }}-${{ matrix.arch }}
+            backend.args.GIT_SHA=${{ github.sha }}
+            frontend.args.GIT_SHA=${{ github.sha }}
             backend.cache-from=type=gha,scope=backend-${{ matrix.arch }},version=2
             backend.cache-to=type=gha,mode=max,scope=backend-${{ matrix.arch }},version=2
             frontend.cache-from=type=gha,scope=frontend-${{ matrix.arch }},version=2

@@ -22,5 +22,7 @@ RUN --mount=type=cache,id=backend-go-mod,target=/go/pkg/mod \
     CGO_ENABLED=0 go build -o /go/bin/http cmd/http/main.go
 
 FROM alpine AS production
+ARG GIT_SHA=unknown
+LABEL org.opencontainers.image.revision="${GIT_SHA}"
 COPY --from=build /go/bin/http /go/bin/http
 ENTRYPOINT ["/go/bin/http"]

@@ -246,6 +246,11 @@ screens stale. Complete them before deployment and release refinements.
     branch. Clean up architecture-specific intermediate tags.
   - Add OCI source/revision/version labels, SBOMs, build provenance, signatures,
     deployment documentation, and rollback instructions.
+  - Partial (2026-08-27): push builds pass the full `github.sha` into the backend
+    and frontend `org.opencontainers.image.revision` OCI labels; the frontend
+    also exposes it in the generated HTML as the `git-revision` meta tag.
+    Source/version labels and the remaining release metadata are still
+    outstanding.
   - Decide how the edge `lb` image is delivered. The current workflow publishes
     only backend and frontend images while Compose builds `lb` from source, so the
     deployment is not fully represented by immutable release artifacts.

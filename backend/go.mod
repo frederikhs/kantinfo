@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/frederikhs/kokkeneskoekken v1.0.1
-	github.com/gin-contrib/cors v1.7.8
+	github.com/gin-contrib/cors v1.7.9
 	github.com/gin-gonic/gin v1.12.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/ncruces/go-sqlite3 v0.35.5

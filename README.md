@@ -3,6 +3,11 @@
 A backend and frontend application for displaying a canteen menu.
 Data provided by kokkeneskoekken.
 
+The backend fetches menus on startup, then every 10 minutes between 09:00 and
+11:00 in Europe/Copenhagen and every four hours outside that window. Waits end
+at 09:00 and 11:00 when crossing a window boundary. Intervals run from the end
+of each fetch, so refreshes do not overlap.
+
 ### How to get started
 
 ### Requirements for local development

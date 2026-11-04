@@ -8,13 +8,47 @@ import (
 	"log"
 	"sync/atomic"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/gin-gonic/gin"
 )
 
-const syncInterval = time.Hour
+const (
+	syncInterval     = 4 * time.Hour
+	busySyncInterval = 10 * time.Minute
+)
+
+// nextMenuSync caps each wait at the next window boundary so the four-hour
+// interval cannot skip the morning checks. The window follows Copenhagen time.
+func nextMenuSync(now time.Time, location *time.Location) time.Time {
+	now = now.In(location)
+	start := time.Date(now.Year(), now.Month(), now.Day(), 9, 0, 0, 0, location)
+	end := time.Date(now.Year(), now.Month(), now.Day(), 11, 0, 0, 0, location)
+
+	interval := syncInterval
+	boundary := start
+	switch {
+	case now.Before(start):
+	case now.Before(end):
+		interval = busySyncInterval
+		boundary = end
+	default:
+		boundary = start.AddDate(0, 0, 1)
+	}
+
+	next := now.Add(interval)
+	if next.After(boundary) {
+		return boundary
+	}
+	return next
+}
 
 func main() {
+	location, err := time.LoadLocation("Europe/Copenhagen")
+	if err != nil {
+		log.Fatalf("load menu sync timezone: %v", err)
+	}
+
 	db := persistence.NewDB()
 	db.CreateTables()
 
@@ -31,7 +65,7 @@ func main() {
 	go func() {
 		for {
 			service.SyncData(db)
-			nextSync := time.Now().Add(syncInterval)
+			nextSync := nextMenuSync(time.Now(), location)
 			nextSyncAt.Store(nextSync.UnixNano())
 			time.Sleep(time.Until(nextSync))
 		}

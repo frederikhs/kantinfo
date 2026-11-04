@@ -23,7 +23,7 @@ Runtime request flow:
 ```text
 browser -> lb nginx -> frontend nginx
                     -> Go API -> SQLite
-                              -> Kokkenes Koekken upstream API (hourly)
+                              -> Kokkenes Koekken upstream API (scheduled)
 ```
 
 ## Local development
@@ -120,12 +120,26 @@ screens stale. Complete them before deployment and release refinements.
 
 - [ ] **P0-SYNC-1: Bound upstream requests and make refresh scheduling resilient.**
   - Problem: synchronization uses `http.DefaultClient` without a timeout. One
-    stalled request can prevent all future hourly refreshes.
+    stalled request can prevent all future scheduled refreshes.
   - Implement: inject a client with a total timeout; pass contexts; add bounded
     retry/backoff with jitter; record the last attempt, last success, duration,
     item count, and failure. Prefer a ticker/scheduler that cannot overlap jobs.
   - Done when: a stalled upstream terminates predictably, old data remains
     available, and later scheduled refreshes still run.
+
+- [x] **P0-SYNC-2: Increase menu checks during the morning window.**
+  - Implemented (2026-11-04): refresh immediately on startup, then every 10
+    minutes from 09:00 until 11:00 Europe/Copenhagen, and every four hours
+    otherwise, every day. Each interval starts when the previous fetch finishes;
+    waits are capped at 09:00/11:00 to enter/leave the window promptly. The
+    existing cache deadline follows the scheduled next attempt.
+  - Embedded Go timezone data keeps the schedule independent of container
+    timezone packages. Tests cover boundaries, UTC inputs, summer/winter time,
+    daylight-saving transitions, midnight, month/year rollover, and weekends.
+  - Verification: `go test ./...`, `go test -race ./...`, and `go vet ./...`
+    passed.
+  - This changes cadence only; timeout/retry work remains in P0-SYNC-1 and
+    last-known-good persistence remains in P0-DATA-1.
 
 - [ ] **P0-UI-1: Automatically refresh unattended wallboards.**
   - Problem: `frontend/src/Frame.tsx` fetches only when the route date changes.

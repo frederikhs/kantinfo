@@ -31,27 +31,36 @@ export default function Frame({nav}: { nav: boolean }) {
 
     useEffect(() => {
         let ignoreResponse = false
+        let timer: ReturnType<typeof setTimeout>
+        const controller = new AbortController()
 
-        getMenuItems(dateV).then((r) => {
-            if (ignoreResponse) {
-                return
+        const refresh = async () => {
+            try {
+                const r = await getMenuItems(dateV, controller.signal)
+                if (ignoreResponse || r.status !== 200) {
+                    return
+                }
+
+                setData({
+                    date: dateV,
+                    menuItems: r.response.menu,
+                    navigation: r.response.navigation,
+                    currentOrNext: r.response.current_or_next,
+                })
+            } catch {
+                // Keep the current menu and try again on the next check.
+            } finally {
+                if (!ignoreResponse) {
+                    timer = setTimeout(refresh, 60_000)
+                }
             }
-
-            if (r.status !== 200) {
-                setData(undefined)
-                return
-            }
-
-            setData({
-                date: dateV,
-                menuItems: r.response.menu,
-                navigation: r.response.navigation,
-                currentOrNext: r.response.current_or_next,
-            })
-        })
+        }
+        void refresh()
 
         return () => {
             ignoreResponse = true
+            clearTimeout(timer)
+            controller.abort()
         }
     }, [dateV])
 

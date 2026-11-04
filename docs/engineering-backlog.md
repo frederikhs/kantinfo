@@ -150,6 +150,11 @@ screens stale. Complete them before deployment and release refinements.
     refreshing. Avoid synchronized polling across many clients by adding jitter.
   - Done when: `/menu/neaste/stor` updates without navigation or page reload and
     recovers from temporary network/API failure.
+  - Partial (2026-11-04, deliberately kept simple): menus and date lists now
+    fetch again 60 seconds after each request finishes, using normal HTTP caching.
+    Failures retain displayed data; navigation/unmount cancels pending requests
+    and timers. No new dependencies or backend changes. Visibility/reconnect
+    events and jitter remain deferred. Frontend lint and production build pass.
 
 ### P1: Correctness, contracts, and visible UX
 

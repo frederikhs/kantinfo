@@ -7,22 +7,13 @@ export interface Response {
     status: number
 }
 
-const getJson = async (uri: string) => {
+const getJson = async (uri: string, signal?: AbortSignal) => {
     const response = await fetch(uri, {
-        method: 'GET'
+        method: 'GET',
+        signal
     })
 
-    let responseJson
-
-    try {
-        responseJson = await response.json();
-    } catch (exception) {
-        responseJson = {
-            exception: exception,
-            status: response.status,
-            response: {}
-        };
-    }
+    const responseJson = await response.json()
 
     return {
         status: response.status,
@@ -34,8 +25,8 @@ interface DatesResponse extends Response {
     response: MenuDate[]
 }
 
-export async function getDates(): Promise<DatesResponse> {
-  return await getJson(`${Environment.REST_API_HOST}/dates`);
+export async function getDates(signal?: AbortSignal): Promise<DatesResponse> {
+  return await getJson(`${Environment.REST_API_HOST}/dates`, signal);
 }
 
 interface MenuResponse extends Response {
@@ -46,6 +37,6 @@ interface MenuResponse extends Response {
     }
 }
 
-export async function getMenuItems(date: string): Promise<MenuResponse> {
-  return await getJson(`${Environment.REST_API_HOST}/menu/${date}`);
+export async function getMenuItems(date: string, signal?: AbortSignal): Promise<MenuResponse> {
+  return await getJson(`${Environment.REST_API_HOST}/menu/${date}`, signal);
 }

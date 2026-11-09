@@ -282,6 +282,11 @@ screens stale. Complete them before deployment and release refinements.
     GHCR visibility, package retention, and artifact retention.
   - Add `CODEOWNERS`, a pull-request template, issue templates, `SECURITY.md`, and
     a license if this repository is intended for collaboration or distribution.
+  - Partial (2026-11-09): Dependabot groups all Go module version updates in
+    `/backend` into one weekly `go-dependencies` PR and GitHub Actions version
+    updates into one weekly `github-actions-dependencies` PR. Each ecosystem
+    allows at most one open version-update PR, matching the existing npm grouping.
+    YAML parsing and grouping assertions passed; hosted settings remain unverified.
 
 - [ ] **P2-OPS-1: Add container health and hardening controls.**
   - Run services as non-root where supported; use read-only filesystems and
